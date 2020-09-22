@@ -1,6 +1,88 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "lista.h"
+
+void sorteia_inicio(Lista *list) {
+    if(lista_vazia(*list)) {
+        printf("\nNao é possível sortear de uma lista vazia!");
+        return;
+    }
+    char nome[50];
+    int pos, tam = lista_tam(*list);
+    srand(time(NULL));
+    printf("\nSoldados mortos...");
+    while(tam > 1) {
+        pos = rand() % tam;
+        printf("\nNumero sorteado(%d)", pos);
+        remove_pos(list, pos, nome);
+        printf("\nSoldado %s morreu", nome);
+        tam--;
+    }
+    if(obtem_valor_elem(*list, 0, nome)) 
+        printf("\nSoldado %s foi o unico sobrevivente!", nome);
+    else 
+        printf("\nErro ao obter nome!");
+}
+
+void sorteia_aleatorio(Lista *list) {
+    if(lista_vazia(*list)) {
+        printf("\nNao é possível sortear de uma lista vazia!");
+        return;
+    }
+    char nome[50];
+    int pos, tam = lista_tam(*list);
+    srand(time(NULL));
+    pos = rand() % tam;
+    printf("\nO numero sorteado para inicio foi %d", pos);
+    if(!avanca_lista(list, pos)) {
+        printf("Erro ao avancar a lista");
+        return;
+    }
+    if(obtem_valor_elem(*list, 0, nome)) 
+        printf("\nSoldado %s foi sorteado!", nome);
+    else {
+        printf("\nErro ao obter nome!");
+        return;
+    }
+    printf("\nSoldados mortos...");
+    while(tam > 1) {
+        pos = rand() % tam;
+        printf("\nNumero sorteado(%d)", pos);
+        remove_pos(list, pos, nome);
+        printf("\nSoldado %s morreu", nome);
+        tam--;
+    }
+    if(obtem_valor_elem(*list, 0, nome)) 
+        printf("\nSoldado %s foi o unico sobrevivente!", nome);
+    else 
+        printf("\nErro ao obter nome!");
+}
+
+void sorteia_nome(Lista *list, char *nome) {
+    if(lista_vazia(*list)) {
+        printf("\nNao é possível sortear de uma lista vazia!");
+        return;
+    }
+    if(!avanca_lista_nome(list, nome)) {
+        printf("\nNao foi possivel sortear a partir do soldado %s!", nome);
+        return;
+    }
+    int pos, tam = lista_tam(*list);
+    srand(time(NULL));
+    printf("\nSoldados mortos...");
+    while(tam > 1) {
+        pos = rand() % tam;
+        printf("\nNumero sorteado(%d)", pos);
+        remove_pos(list, pos, nome);
+        printf("\nSoldado %s morreu", nome);
+        tam--;
+    }
+    if(obtem_valor_elem(*list, 0, nome)) 
+        printf("\nSoldado %s foi o unico sobrevivente!", nome);
+    else 
+        printf("\nErro ao obter nome!");
+}
 
 int main() {
     int i, qnt, escolha, sortedNum;
@@ -15,7 +97,7 @@ int main() {
         printf("Digite o nome do %do soldado: ", i + 1);
         setbuf(stdin, NULL);
         scanf("%[^\n]", name);
-        if(!insere_soldado(&soldados, name)){
+        if(!insere_nome(&soldados, name)){
             printf("\nErro na alocacao!!");
             exit(1);
         }
@@ -27,39 +109,16 @@ int main() {
     scanf("%d", &escolha);
     switch(escolha) {
         case 1:
-            if(sorteia_inicio(soldados, &nomes)) {
-                printf("\nSoldados mortos...");
-                for(i = 0; i < qnt - 1; i++) 
-                    printf("\nSoldado %s morreu", nomes[i]);
-                printf("\nSoldado %s foi o unico sobrevivente!", nomes[qnt - 1]);
-            } else {
-                printf("\nNao foi possivel sortear do inicio!");
-            }
+            sorteia_inicio(&soldados); 
             break;
         case 2:
-            if(sorteia_aleatorio(soldados, &nomes, name, &sortedNum)) {
-                printf("\nO numero %d foi sorteado!", sortedNum);
-                printf("\nPrimeiro soldado: %s", name);
-                printf("\nSoldados mortos...");
-                for(i = 0; i < qnt - 1; i++) 
-                    printf("\nSoldado %s morreu", nomes[i]);
-                printf("\nSoldado %s foi o unico sobrevivente!", nomes[qnt - 1]);
-            } else {
-                printf("\nNao foi possivel sortear de uma posicao aleatoria!");
-            }
+            sorteia_aleatorio(&soldados);
             break;
         case 3:
             printf("Digite o nome do soldado que deve iniciar: ");
             setbuf(stdin, NULL);
             scanf("%[^\n]", name);
-            if(sorteia_nome(soldados, &nomes, name)) {
-                printf("\nSoldados mortos...");
-                for(i = 0; i < qnt - 1; i++) 
-                    printf("\nSoldado %s morreu", nomes[i]);
-                printf("\nSoldado %s foi o unico sobrevivente!", nomes[qnt - 1]);
-            } else {
-                printf("\nNao foi possivel sortear a partir do soldado %s!", name);
-            }
+            sorteia_nome(&soldados, name);
             break;
         default:
             printf("Saindo do programa...");
