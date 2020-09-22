@@ -9,8 +9,6 @@ void libera (Lista list);
 
 Lista cria();
 
-int vazia(Lista list);
-
 int cheia(Lista list);
 
 int inserir(Lista list, int value);
@@ -28,7 +26,5 @@ int posicao(Lista list, int pos);
 Lista inverter(Lista list);
 
 Lista concatenar(Lista l1, Lista l2);
-
-void imprime(Lista list);
 
 #endif

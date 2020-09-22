@@ -145,13 +145,3 @@ int posicao(Lista list, int pos)
 
   return list->lista[pos];
 }
-
-void imprime(Lista list)
-{
-  printf("Imprimindo lista...\n");
-  for (size_t i = 0; i < list->fim; i++)
-  {
-    printf("Lista[%d] = %d\n", i, list->lista[i]);
-  }
-  
-}
