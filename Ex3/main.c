@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include ".\headers\lista.h"
+#include "lista.h"
 
 //Lê todos os caracteres presentes no STDIN
 void clean_buffer(){

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "..\headers\lista.h"
+#include "lista.h"
 
 struct no {
     float info; //Informação que será guardada pelo no
@@ -170,14 +170,14 @@ int intercalar_listas(Lista *lista_1, Lista *lista_2, Lista *lista_3){
     if (lista_vazia(aux_1) == 1 || lista_vazia(aux_2) == 1)
         return 0;
 
-    for (size_t i = 0; i < tamanho_lista(&aux_1); i++) {
-        if (insere_ord(&(*lista_3), aux_1->info) == 0)
+    for (size_t i = 0; i < tamanho_lista(lista_1); i++) {
+        if (insere_ord(lista_3, aux_1->info) == 0)
             return 0;
         aux_1 = aux_1->prox;
     }
 
-    for (size_t i = 0; i < tamanho_lista(&aux_2); i++) {
-        if (insere_ord(&(*lista_3), aux_2->info) == 0)
+    for (size_t i = 0; i < tamanho_lista(lista_2); i++) {
+        if (insere_ord(lista_3, aux_2->info) == 0)
             return 0;
         aux_2 = aux_2->prox;
     }
