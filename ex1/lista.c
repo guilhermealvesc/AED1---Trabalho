@@ -27,11 +27,6 @@ Lista cria()
   return resultado;
 }
 
-int vazia(Lista list)
-{ 
-  return (list->fim == 0);
-}
-
 int cheia(Lista list)
 { 
   return list->fim == max;
@@ -45,7 +40,6 @@ int inserir(Lista list, int value)
 
     return 1;
   } else {
-    printf("Impossivel inserir, lista cheia!\n");
     return 0;
   }
 }
@@ -138,23 +132,13 @@ int esvaziar(Lista list)
 int posicao(Lista list, int pos)
 { 
   if (pos < 0 || pos >= max){
-    printf("posicao fora do escopo[0, 19]!\n");
+    //posicao fora do escopo[0, 19]
     return 0;
   }
   if(pos >= list->fim){
-    printf("lixo da memória");
+    // lixo da memória
     return 1;
   }
 
   return list->lista[pos];
-}
-
-void imprime(Lista list)
-{
-  printf("Imprimindo lista...\n");
-  for (size_t i = 0; i < list->fim; i++)
-  {
-    printf("Lista[%d] = %d\n", i, list->lista[i]);
-  }
-  
 }

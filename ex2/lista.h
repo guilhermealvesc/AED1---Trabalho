@@ -29,6 +29,4 @@ Lista inverter(Lista list);
 
 Lista intercalar(Lista l1, Lista l2);
 
-void imprime(Lista list);
-
 #endif

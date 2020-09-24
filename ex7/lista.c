@@ -12,7 +12,6 @@ suficiente para descartar o uso do nó cabeçalho para esse problema.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 #include "lista.h"
 //Estrutura para posicao de cada elemento
 struct no {
@@ -42,7 +41,7 @@ int lista_tam(Lista list) {
     return cont;
 }
 //Insere um elemento no final da lista
-int insere_soldado(Lista *list, char* nome) {
+int insere_nome(Lista *list, char* nome) {
     Lista N = (Lista) malloc(sizeof(struct no));
     if(N == NULL)
         return 0;
@@ -58,152 +57,64 @@ int insere_soldado(Lista *list, char* nome) {
     }
     return 1;
 }
-
-char** alocaNomes(int tamanho) {
-    char* *nomes = malloc(tamanho * sizeof(char*));
-    if(nomes == NULL) 
-        return NULL;
-    int i;
-    for(i = 0; i < tamanho; i++) {
-        nomes[i] = (char*) malloc(50*sizeof(char));
-        if(nomes[i] == NULL)
-            return NULL;
-    }
-    return nomes;
-}
-
-/* 
-Sorteia aleatoriamente até achar o soldado sobrevivente, partindo do início / Retorna 
-uma lista com tamanho da quantidade de soldados na ordem de eliminação, e no final, o sobrevivente.
- */
-int sorteia_inicio(Lista list, char** *nomes) {
-    if(lista_vazia(list)) 
+//Remove um elemento em uma determinada posição
+int remove_pos(Lista *list, int pos, char* nome) {
+    if(lista_vazia(*list)) 
         return 0;
-    //Pega tamanho da lista
-    int contMortos = 0, pos, tam = lista_tam(list);
-    *nomes = alocaNomes(tam);
-    if(*nomes == NULL) 
-        return 0;
-    srand(time(NULL));
-    //Primeiro Soldado
-    Lista aux = list;
-    //Enquanto tiver mais de um soldado
-    while(tam > 1) {
-        pos = rand() % tam;
-        //Ando pos posições
-        while(pos > 0) {
-            aux = aux->prox;
-            pos--;
-        }
-        //Coloco so soldado morto na lista
-        strcpy((*nomes)[contMortos], aux->prox->nomeSoldado);
-        contMortos++;
-        //E removo o soldado da lista
-        Lista aux2 = aux->prox;
-        aux->prox = aux2->prox;
-        free(aux2);
-        list = aux;
-        tam--;
-    }
-    //Coloca o nome do sobrevivente no final da lista
-    strcpy((*nomes)[contMortos], list->nomeSoldado);
-    return 1;
-}
-
-/* 
-Sorteia aleatoriamente até achar o soldado sobrevivente, partindo de um soldado aleatório / Retorna 
-uma lista com tamanho da quantidade de soldados na ordem de eliminação, e no final, o sobrevivente /
-Também devolve o nome do soldado sorteado e o numero sorteado.
- */
-int sorteia_aleatorio(Lista list, char** *nomes, char *nomesoldado, int *num) {
-    if(lista_vazia(list)) 
-        return 0;
-    //Pega tamanho da lista
-    int contMortos = 0, pos, tam = lista_tam(list);
-    *nomes = alocaNomes(tam);
-    if(*nomes == NULL) 
-        return 0;
-    srand(time(NULL));
-    //Sorteia um soldado para começar
-    pos = rand() % tam;
-    *num = pos;
-    //Anda até o soldado o primeiro soldado
+    //Percorro até a posição pos
     while(pos > 0) {
-        list = list->prox;
+        *list = (*list)->prox;
         pos--;
     }
-    //Retornando soldado de inicio
-    strcpy(nomesoldado, list->prox->nomeSoldado);
-    //Último Soldado
-    Lista aux = list;
-    //Enquanto tiver mais de um soldado
-    while(tam > 1) {
-        pos = rand() % tam;
-        //Ando pos posições
-        while(pos > 0) {
-            aux = aux->prox;
-            pos--;
-        }
-        //Coloco so soldado morto na lista
-        strcpy((*nomes)[contMortos], aux->prox->nomeSoldado);
-        contMortos++;
-        //E removo o soldado da lista
-        Lista aux2 = aux->prox;
-        aux->prox = aux2->prox;
-        free(aux2);
-        list = aux;
-        tam--;
-    }
-    //Coloca o nome do sobrevivente no final da lista
-    strcpy((*nomes)[contMortos], list->nomeSoldado);
+    //Retorna o nome removido
+    strcpy(nome, (*list)->prox->nomeSoldado);
+    Lista aux2 = (*list)->prox;
+    (*list)->prox = aux2->prox;
+    free(aux2);
     return 1;
 }
-/* 
-Sorteia aleatoriamente até achar o soldado sobrevivente, partindo de um soldado informado / Retorna 
-uma lista com tamanho da quantidade de soldados na ordem de eliminação, e no final, o sobrevivente /
-Se o nome informado do soldado nao estiver na lista, retorna 0.
- */
-int sorteia_nome(Lista list, char** *nomes, char *nomesoldado) {
-    if(lista_vazia(list)) 
+
+//Avança a lista pos posições
+int avanca_lista(Lista *list, int pos){
+    if(lista_vazia(*list) || pos < 0) 
         return 0;
-    //Pega tamanho da lista
-    int contMortos = 0, pos, tam = lista_tam(list);
-    *nomes = alocaNomes(tam);
-    if(*nomes == NULL) 
+    //Anda até pos
+    while(pos > 0) {
+        *list = (*list)->prox;
+        pos--;
+    }
+    return 1;
+}
+//Avança a lista até um nome
+int avanca_lista_nome(Lista *list, char *name){
+    if(lista_vazia(*list)) 
         return 0;
-    //Último Soldado
-    Lista aux = list;
-    //Percorre os soldados procurando o nome por onde iniciar
+    Lista aux = *list;
     //Se nao for no inicio, o soldado com o nome deve estar para frente
-    if(strcmp(list->prox->nomeSoldado, nomesoldado)) {
-        aux = list->prox;
-        while (aux->prox != list->prox && strcmp(aux->prox->nomeSoldado, nomesoldado)) 
+    if(strcmp((*list)->prox->nomeSoldado, name)) {
+        aux = (*list)->prox;
+        while (aux->prox != (*list)->prox && strcmp(aux->prox->nomeSoldado, name)) 
             aux = aux->prox;
         //Soldado nao foi encontrado
-        if(aux->prox == list->prox) {
+        if(aux->prox == (*list)->prox) {
             return 0;
         }
+        *list = aux;
     }
-    srand(time(NULL));
-    //Enquanto tiver mais de um soldado
-    while(tam > 1) {
-        pos = rand() % tam;
-        //Ando pos posições
-        while(pos > 0) {
-            aux = aux->prox;
-            pos--;
-        }
-        //Coloco so soldado morto na lista
-        strcpy((*nomes)[contMortos], aux->prox->nomeSoldado);
-        contMortos++;
-        //E removo o soldado da lista
-        Lista aux2 = aux->prox;
-        aux->prox = aux2->prox;
-        free(aux2);
-        list = aux;
-        tam--;
-    }
-    //Coloca o nome do sobrevivente no final da lista
-    strcpy((*nomes)[contMortos], list->nomeSoldado);
     return 1;
+}
+//Obtem o valor do elemento de uma lista no indice especificado
+int obtem_valor_elem(Lista list, int indice, char *elem) {
+    if(indice < 0 || lista_vazia(list))
+        return 0;
+    Lista aux = list->prox;
+    while(indice > 0 && aux->prox != list->prox) {
+        aux = aux->prox;
+        indice--;
+    }
+    if(!indice) {
+        strcpy(elem, aux->nomeSoldado);
+        return 1;
+    }
+    return 0;
 }
