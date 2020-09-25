@@ -171,13 +171,13 @@ int intercalar_listas(Lista *lista_1, Lista *lista_2, Lista *lista_3){
         return 0;
 
     for (size_t i = 0; i < tamanho_lista(lista_1); i++) {
-        if (insere_ord(lista_3, aux_1->info) == 0)
+        if (insere_ord(&(*lista_3), aux_1->info) == 0)
             return 0;
         aux_1 = aux_1->prox;
     }
 
     for (size_t i = 0; i < tamanho_lista(lista_2); i++) {
-        if (insere_ord(lista_3, aux_2->info) == 0)
+        if (insere_ord(&(*lista_3), aux_2->info) == 0)
             return 0;
         aux_2 = aux_2->prox;
     }
