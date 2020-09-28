@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include <math.h>
 #include "lista.h"
  
@@ -19,8 +18,7 @@ Lista cria()
   Lista resultado = (Lista) malloc(sizeof(struct lista));
 
   if (!resultado){
-    printf("memoria insuficiente!\n");
-    exit(1);
+    return NULL;
   }
   resultado->fim = 0;
 
@@ -105,8 +103,7 @@ Lista intercalar(Lista l1, Lista l2)
   Lista resultado = cria();
 
   if(resultado == NULL) {
-    printf("Sem memoria!\n");
-    exit(1);
+    return NULL;
   }
 
   for (size_t i = 0; i < l1->fim; i++)

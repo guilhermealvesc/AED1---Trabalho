@@ -182,6 +182,7 @@ int main(){
                 else
                     printf("Lista limpa!");
                 break;
+            //Intercalar duas listas
             case 9:
                 system("cls");
                 if(intercalar_listas(&listas[0], &listas[1], &listas[2]) == 0)
