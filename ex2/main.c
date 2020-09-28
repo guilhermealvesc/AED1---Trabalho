@@ -86,6 +86,8 @@ int main()
       list[2] = intercalar(list[escolha], list[!escolha]);
       printf("Resultado:\n");
       imprime(list[2]);
+      esvaziar(list[2]);
+      list[2] = NULL;
 
       break;
     case 6:

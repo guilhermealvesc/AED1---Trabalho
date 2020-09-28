@@ -31,6 +31,11 @@ int main()
   list[0] = cria();
   list[1] = cria();
   list[2] = cria();
+  if (list[0] == NULL || list[1] == NULL || list[2] == NULL)
+  {
+    printf("sem memoria!\n");
+    exit(0);
+  }
 
   while (opcao != 10)  
   {
@@ -93,6 +98,8 @@ int main()
       list[2] = concatenar(list[escolha], list[!escolha]);
       printf("Resultado:\n");
       imprime(list[2]);
+      esvaziar(list[2]);
+      list[2] = NULL;
 
       break;
     case 7:
@@ -109,7 +116,8 @@ int main()
     case 9:
       escolha = chose_list();
 
-      remove_impares(list[escolha]);
+      if (!remove_impares(list[escolha]))
+        printf("Erro! Lista vazia!\n");
 
       break;
     case 10:

@@ -44,6 +44,9 @@ int inserir(Lista list, int value)
 
 int remove_impares(Lista list)
 { 
+  if (list->fim == 0)
+    return 0;
+    
   for (size_t i = list->fim-1; i > 0; i--)
   {
     if((list->lista[i] % 2) != 0.0){
