@@ -8,7 +8,7 @@ int main(int argc, char const *argv[])
   int option = 1, continuar = 1, tmp = 0, tmp2 = 0, qnt_lista = 0;
   char letra;
   Lista lst[tam];
-  int lst_ocupados[3] = {0};
+  int lst_ocupados[tam] = {0};
   while (continuar)
   {
     printf("1: Criar lista lst\n2: Insere na lista\n3: Remove primeira ocorrencia\n4: Remove segundo a posicao\n5: Imprimir lista\n6: Limpar uma lista\n7: Tamanho e uma lista\n8: Ver se as listas sao iguais\n9: Exibir maior elemento de uma lista\n10: Intercalar duas listas em uma terceira\n11: Sair\n\nOpcao: ");
