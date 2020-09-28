@@ -34,7 +34,7 @@ int insere_ord(Lista *lst, char elem)
 }
 int remove_ord(Lista *lst, char elem)
 {
-  if (lista_vazia(lst) /*|| elem < (*lst)->info*/)
+  if (((*lst)->info == 0) /*|| elem < (*lst)->info*/)
     return 0;
 
   Lista aux = (*lst)->prox;
@@ -79,7 +79,7 @@ int esvazia_lista(Lista *lst)
 }
 int obtem_valor_elem(Lista *lst, int index, char *result)
 {
-  if (lista_vazia((lst)) || index < 0 || index > (*lst)->info)
+  if (((*lst)->info == 0) || index < 0 || index > (*lst)->info)
     return 0;
   Lista aux = (*lst)->prox;
   while (aux != NULL && index--)
@@ -133,33 +133,38 @@ int intercalar(Lista *lst1, Lista *lst2, Lista *lst3)
 
   Lista auxMaior;
   Lista auxMenor;
-  int diff = 0;
   if ((*lst1)->info > (*lst2)->info)
   {
     auxMenor = (*lst2)->prox;
     auxMaior = (*lst1)->prox;
-    diff = (*lst1)->info - (*lst2)->info;
   }
   else
   {
     auxMenor = (*lst1)->prox;
     auxMaior = (*lst2)->prox;
-    diff = (*lst2)->info - (*lst1)->info;
   }
   int flag = 1;
   while (auxMenor != NULL)
   {
-    flag = insere_ord(lst3, auxMenor->info);
-    flag = insere_ord(lst3, auxMaior->info);
+    if (!insere_ord(lst3, auxMenor->info) || !insere_ord(lst3, auxMaior->info))
+    {
+      flag = 0;
+      esvazia_lista(lst3);
+      return flag;
+    }
+
     auxMenor = auxMenor->prox;
     auxMaior = auxMaior->prox;
   }
-  while (diff--)
+  while (auxMaior != NULL)
   {
-    flag = insere_ord(lst3, auxMaior->info);
+    if (insere_ord(lst3, auxMaior->info))
+    {
+      flag = 0;
+      esvazia_lista(lst3);
+      return flag;
+    }
     auxMaior = auxMaior->prox;
   }
-  if (!flag)
-    esvazia_lista(lst3);
-  return flag;
+  return 1;
 }
